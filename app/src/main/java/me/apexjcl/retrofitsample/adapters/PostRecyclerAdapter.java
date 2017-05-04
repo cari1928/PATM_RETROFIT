@@ -20,7 +20,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<PostRecyclerAdapte
 
     private ArrayList<Post> posts = new ArrayList<>(0);
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView mTitle;
         private TextView mBody;

@@ -1,10 +1,12 @@
 package me.apexjcl.retrofitsample.models;
 
+import io.realm.RealmObject;
+
 /**
  * Created by radog on 04/05/2017.
  */
 
-public class Post {
+public class Post extends RealmObject {
 
     private int id;
     private int userId;

@@ -2,6 +2,7 @@ package me.apexjcl.retrofitsample.api;
 
 import java.util.List;
 
+import me.apexjcl.retrofitsample.models.Post;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -13,5 +14,5 @@ import retrofit2.http.POST;
 public interface PostAPI {
 
     @GET("/posts")
-    Call<List<POST>> getPosts();
+    Call<List<Post>> getPosts();
 }

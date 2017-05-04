@@ -8,19 +8,21 @@ import android.support.v7.widget.RecyclerView;
 
 import java.util.List;
 
+import me.apexjcl.retrofitsample.adapters.PostRecyclerAdapter;
 import me.apexjcl.retrofitsample.api.PostAPI;
 import me.apexjcl.retrofitsample.api.ServiceGenerator;
+import me.apexjcl.retrofitsample.models.Post;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.POST;
 
 public class MainActivity extends AppCompatActivity implements
         SwipeRefreshLayout.OnRefreshListener,
-        Callback<List<POST>>{
+        Callback<List<Post>> {
 
     private SwipeRefreshLayout mLayout;
     private RecyclerView mRecyclerView;
+    private PostRecyclerAdapter mAdapter;
     private PostAPI mPostApi;
 
     @Override
@@ -32,8 +34,22 @@ public class MainActivity extends AppCompatActivity implements
         mLayout.setOnRefreshListener(this);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        mAdapter = new PostRecyclerAdapter();
+        mRecyclerView.setAdapter(mAdapter);
         //Se inicializa el servicio para consumir la API de Posts
         mPostApi = ServiceGenerator.generate(PostAPI.class);
+    }
+
+    @Override
+    public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+        mLayout.setRefreshing(false);
+        mAdapter.setPosts(response.body());
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onFailure(Call<List<Post>> call, Throwable t) {
+        mLayout.setRefreshing(false);
     }
 
     @Override
@@ -41,16 +57,5 @@ public class MainActivity extends AppCompatActivity implements
         //sincrono enquie
         //asincrono execute
         mPostApi.getPosts().enqueue(this);
-    }
-
-    @Override
-    public void onResponse(Call<List<POST>> call, Response<List<POST>> response) {
-        mLayout.setRefreshing(false);
-
-    }
-
-    @Override
-    public void onFailure(Call<List<POST>> call, Throwable t) {
-        mLayout.setRefreshing(false);
     }
 }
